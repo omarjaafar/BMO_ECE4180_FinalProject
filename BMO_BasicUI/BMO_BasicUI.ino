@@ -13,19 +13,21 @@
 #include "RemoteHappiness.h"
 #include "MicVoice.h"
 
-
 // ----- Globals -----
 int energy = 70;
 int happiness = 0;
 
 int menuIndex = 0;
+bool inOverlay = false;      // "Back (up)" overlay
+bool inChatOverlay = false;  // true while BMO reply text is shown
 
 // Main Menu
-const int MENU_ITEMS = 3;
+const int MENU_ITEMS = 4;
 const char* menuOptions[] = {
     "Games",
     "Replenish Stats",
-    "Settings"
+    "Settings",
+    "Play Theme"
 };
 
 // Settings Menu
@@ -48,7 +50,6 @@ AppState appState = STATE_MAIN_MENU;
 // Display objects
 HardwareSerial DisplaySerial(1);
 Goldelox_Serial_4DLib Display(&DisplaySerial);
-
 
 unsigned long lastTimeUpdate = 0;
 
@@ -97,6 +98,28 @@ void loop() {
         return;
     }
 
+    // If in overlay (Back (up) screen), only react to UP to go back
+    if (inOverlay) {
+        if (up) {
+            inOverlay = false;
+            soundMenuMove();
+            drawScreen();   // redraw full menu
+        }
+
+        // still run mic + stats + time while overlay is shown
+        micVoiceLoop();
+
+        unsigned long now = millis();
+        if (now - lastTimeUpdate >= 60000) {
+            lastTimeUpdate = now;
+            updateTime();
+        }
+        updateStats();
+        return;
+    }
+
+    // ---- Normal menu handling ----
+
     // How many items based on current screen
     int maxItems =
         (appState == STATE_MAIN_MENU)     ? MENU_ITEMS :
@@ -107,20 +130,23 @@ void loop() {
     // -------- MENU MOVEMENT --------
     if (up && menuIndex > 0) {
         clearChat();
+        inChatOverlay = false;   // leaving chat
         menuIndex--;
         soundMenuMove();
-        updateMenuCursor();   // was drawScreen();
+        updateMenuCursor();
     }
 
     if (down && menuIndex < maxItems - 1) {
         clearChat();
+        inChatOverlay = false;   // leaving chat
         menuIndex++;
         soundMenuMove();
-        updateMenuCursor();   // was drawScreen();
+        updateMenuCursor();
     }
 
     // -------- SELECT --------
-    if (center) {
+    // Disable center while chat overlay is active
+    if (center && !inChatOverlay) {
         clearChat();
         soundMenuSelect();
 
@@ -135,13 +161,18 @@ void loop() {
     // Voice capture (only when not in Snake)
     micVoiceLoop();
 
+    // Simple chat scroll controls and exiting chat overlay with UP
+    if (appState == STATE_MAIN_MENU) {
+        if (left)  scrollChatUp();
+        if (right) scrollChatDown();
 
-// Simple chat scroll controls (example)
-if (appState == STATE_MAIN_MENU) {
-    if (left)  scrollChatUp();
-    if (right) scrollChatDown();
-}
-
+        // Up exits chat overlay back to plain menu
+        if (inChatOverlay && up) {
+            inChatOverlay = false;
+            clearChat();
+            updateMenuCursor();
+        }
+    }
 
     // Update time once per minute, only on BMO UI (no Snake)
     unsigned long now = millis();
@@ -152,5 +183,4 @@ if (appState == STATE_MAIN_MENU) {
 
     // Decay stats (also updates LED mood)
     updateStats();
-    delay(25);
 }

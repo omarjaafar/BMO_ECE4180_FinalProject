@@ -80,19 +80,21 @@ static void drawSnakeHUD() {
     Display.gfx_Line(0, OFFSET_Y - 5, 127, OFFSET_Y - 5, WHITE);
 }
 
-// Update only SC value and happiness bar (keep labels/static text)
+// Update SC + HI and happiness bar (keep layout)
 static void updateSnakeHUDValues() {
     Display.txt_FGcolour(WHITE);
 
-    // SC number: overwrite just the digits after "SC:"
-    Display.txt_MoveCursor(0, 3);   // position right after "SC:"
-    Display.print("     ");         // clear old digits
-    Display.txt_MoveCursor(0, 3);
+    // Redraw the whole first HUD line so "SC:..  HI:.." stays intact
+    Display.txt_MoveCursor(0, 0);
+    Display.print("SC:");
     Display.print(score);
+    Display.print("  HI:");
+    Display.print(highScore);
 
     // Happiness bar only
     drawBar(58, 10, 65, happiness, YELLOW);
 }
+
 
 // -----------------------------------
 // Full draw: Snake + Food (used once)
@@ -211,30 +213,33 @@ void snakeLoop() {
     readNavLatched(up, down, left, right, center);
 
     // --- If game over: wait for center ---
-    if (gameOver) {
-        if (center) {
-            lastCenter = 0;
-            ledSetMood(happiness);   // restore mood color
-            appState = STATE_GAMES_MENU;
-            menuIndex = 0;
-            // Erase Snake HUD separator line before drawing menus
-            Display.gfx_Line(0, OFFSET_Y - 5, 127, OFFSET_Y - 5, BLACK);
-            drawScreen();            // redraw main UI with updated happiness bar
-        }
-        return;
-    }
-
-    // Exit game early by center
+if (gameOver) {
     if (center) {
         lastCenter = 0;
-        ledSetMood(happiness);       // restore mood color
+        ledSetMood(happiness);   // restore mood color
         appState = STATE_GAMES_MENU;
         menuIndex = 0;
-        // Erase Snake HUD separator line before drawing menus
-        Display.gfx_Line(0, OFFSET_Y - 5, 127, OFFSET_Y - 5, BLACK);
-        drawScreen();                // redraw main UI with updated happiness bar
-        return;
+
+        // Fully clear screen before returning to menus
+        Display.gfx_Cls();
+        drawScreen();
     }
+    return;
+}
+
+
+if (center) {
+    lastCenter = 0;
+    ledSetMood(happiness);       // restore mood color
+    appState = STATE_GAMES_MENU;
+    menuIndex = 0;
+
+    // Fully clear screen before returning to menus
+    Display.gfx_Cls();
+    drawScreen();
+    return;
+}
+
 
     // Prevent 180° reverse
     if (up   && dirY !=  1) { dirX = 0;  dirY = -1; }

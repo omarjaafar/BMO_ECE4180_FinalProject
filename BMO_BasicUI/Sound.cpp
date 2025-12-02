@@ -73,3 +73,24 @@ void soundVoiceReply() {
     playFreq(1200, 80);
     playFreq(1500, 120);
 }
+
+
+void soundPlayAdventureTheme() {
+    // F#4, G4, A4, D5 (one octave above D4), B4
+
+    playFreq(370, 200);  // F#4 ≈ 369.99 Hz
+    playFreq(392, 200);  // G4  ≈ 391.99 Hz
+    playFreq(440, 250);  // A4  = 440 Hz
+    playFreq(587, 250);  // D5  ≈ 587.33 Hz (next octave)
+    playFreq(494, 350);  // B4  ≈ 493.88 Hz
+        // Added part: D5 E5 F#5 E5 D5
+    playFreq(587, 200);  // D5 ≈ 587.33 Hz
+    playFreq(659, 200);  // E5 ≈ 659.26 Hz
+    playFreq(740, 200);  // F#5 ≈ 739.99 Hz
+    playFreq(659, 200);  // E5
+    playFreq(587, 200);  // D5 (resolve)
+    playFreq(659, 200);  // E5
+    playFreq(659, 200);  // E5
+    playFreq(587, 350);  // D5 (resolve)
+}
+

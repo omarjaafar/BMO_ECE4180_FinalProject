@@ -30,7 +30,7 @@ static void drawChatWindow() {
     Display.gfx_RectangleFilled(0, topY, 127, bottomY, BLACK);
 
     // naive wrap into fixed-length lines
-    const int maxCols = 14;
+    const int maxCols = 10;
     String lines[16];
     int lineCount = 0;
     String current = "";
@@ -66,7 +66,7 @@ static void drawChatWindow() {
 
     for (int i = firstLine; i < lastLine; i++) {
         Display.txt_MoveCursor(row, 0);
-        Display.print("                    ");  // clear row
+        Display.print("                ");  // clear row
         Display.txt_MoveCursor(row, 0);
         Display.print(lines[i]);
         row++;
@@ -237,9 +237,26 @@ void drawScreen() {
         return; // A game is running (no menu)
     }
 
-    // Draw menu
-    for (int i = 0; i < count; i++) {
-        Display.txt_MoveCursor(13 + i, 0);
+    // Draw menu with scrolling window
+    const int VISIBLE_ROWS = 3;
+    int firstItem = 0;
+
+    if (menuIndex >= VISIBLE_ROWS) {
+        firstItem = menuIndex - VISIBLE_ROWS + 1;
+    }
+    int lastItem = firstItem + VISIBLE_ROWS;
+    if (lastItem > count) lastItem = count;
+
+    // Clear visible menu rows
+    for (int row = 0; row < VISIBLE_ROWS; row++) {
+        Display.txt_MoveCursor(13 + row, 0);
+        Display.txt_FGcolour(WHITE);
+        Display.print("                  ");
+    }
+
+    // Draw only visible subset
+    for (int row = 0, i = firstItem; i < lastItem; i++, row++) {
+        Display.txt_MoveCursor(13 + row, 0);
 
         if (i == menuIndex) {
             Display.txt_FGcolour(GREEN);
@@ -285,8 +302,25 @@ void updateMenuCursor() {
         return; // no menu to draw
     }
 
-    for (int i = 0; i < count; i++) {
-        Display.txt_MoveCursor(13 + i, 0);
+    const int VISIBLE_ROWS = 3;
+    int firstItem = 0;
+
+    if (menuIndex >= VISIBLE_ROWS) {
+        firstItem = menuIndex - VISIBLE_ROWS + 1;
+    }
+    int lastItem = firstItem + VISIBLE_ROWS;
+    if (lastItem > count) lastItem = count;
+
+    // Clear visible menu rows
+    for (int row = 0; row < VISIBLE_ROWS; row++) {
+        Display.txt_MoveCursor(13 + row, 0);
+        Display.txt_FGcolour(WHITE);
+        Display.print("                  ");
+    }
+
+    // Redraw subset with correct cursor
+    for (int row = 0, i = firstItem; i < lastItem; i++, row++) {
+        Display.txt_MoveCursor(13 + row, 0);
 
         if (i == menuIndex) {
             Display.txt_FGcolour(GREEN);
@@ -347,7 +381,6 @@ void scrollChatDown() {
     drawChatWindow();
 }
 
-
 void clearChat() {
     chatText = "";
     chatScroll = 0;
@@ -357,3 +390,13 @@ void clearChat() {
     Display.gfx_RectangleFilled(0, MENU_TOP, 127, 127, BLACK);
 }
 
+// -------------------------------------
+// Back overlay
+// -------------------------------------
+void drawBackOverlay() {
+    // Clear menu area
+    Display.gfx_RectangleFilled(0, MENU_TOP, 127, 127, BLACK);
+    Display.txt_FGcolour(WHITE);
+    Display.txt_MoveCursor(13, 0);
+    Display.print("> Back (up)");
+}

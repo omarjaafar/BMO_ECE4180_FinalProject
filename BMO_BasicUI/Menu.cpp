@@ -10,9 +10,10 @@
 // Access latch variables from Input.cpp
 extern unsigned long lastCenter;
 
-// extern stats
+// extern stats and UI state
 extern int energy;
 extern int happiness;
+extern bool inOverlay;
 
 void handleMainMenuAction(int index) {
 
@@ -36,6 +37,10 @@ void handleMainMenuAction(int index) {
         // Update only happiness bar + face
         updateBarFill(58, 10, 65, happiness, YELLOW);
         drawFace();
+
+        // Show Back (up) overlay
+        inOverlay = true;
+        drawBackOverlay();
     }
 
     else if (index == 2) {
@@ -46,5 +51,14 @@ void handleMainMenuAction(int index) {
         appState = STATE_SETTINGS_MENU;
         menuIndex = 0;
         drawScreen();
+    }
+
+    else if (index == 3) {
+        // Play "Adventure" style theme beeps
+        soundPlayAdventureTheme();
+
+        // Show Back (up) overlay
+        inOverlay = true;
+        drawBackOverlay();
     }
 }

@@ -8,6 +8,7 @@ void soundMenuSelect();
 void soundFood();
 void soundGameOver();
 void soundVoiceReply();
+void soundPlayAdventureTheme();
 
 
 #endif

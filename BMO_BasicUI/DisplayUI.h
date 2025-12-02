@@ -14,5 +14,7 @@ void showBMOReplyOnScreen(const char* text);
 void scrollChatUp();
 void scrollChatDown();
 void clearChat();
+void drawBackOverlay();
+
 
 #endif
