@@ -9,6 +9,7 @@
 #define BMO_SCREEN_COLOR   0xAFE5  // mint green
 #define BMO_EYE_COLOR      BLACK
 #define BMO_MOUTH_COLOR    BLACK
+#define TURQUOISE 0x07FF
 
 // UART pins (uLCD)
 #define LCD_TX    20

@@ -259,7 +259,7 @@ void drawScreen() {
         Display.txt_MoveCursor(13 + row, 0);
 
         if (i == menuIndex) {
-            Display.txt_FGcolour(GREEN);
+            Display.txt_FGcolour(TURQUOISE);
             Display.print("> ");
         } else {
             Display.txt_FGcolour(WHITE);
@@ -323,7 +323,7 @@ void updateMenuCursor() {
         Display.txt_MoveCursor(13 + row, 0);
 
         if (i == menuIndex) {
-            Display.txt_FGcolour(GREEN);
+            Display.txt_FGcolour(TURQUOISE);
             Display.print("> ");
         } else {
             Display.txt_FGcolour(WHITE);
