@@ -32,7 +32,7 @@ The LED color reflects BMO's emotional state. For example, green or yellow indic
 We used the ESP32 LEDC PWM hardware to generate tones for menu movement, eating food in Snake, game over, and a short melody. Audio helps make interactions feel more responsive.
 
 ### Microphone Module
-The microphone allows BMO to react to sounds or speech. When it detects a noise, BMO plays a sound and animates. This makes the system feel more alive even though it is not doing full speech recognition.
+The microphone allows BMO to react to speech. When it detects speech, BMO is able to decipher the speech with the OpenAI Whisper API and respond. This makes the system feel more alive.
 
 ### Secondary ESP32 With IMU
 This board detects shaking and sends that event to the main ESP32 using ESP NOW. It works like an external toy that increases BMO's happiness when shaken. This also demonstrates a real wireless sensor node design.
@@ -42,7 +42,7 @@ These provide portable power to the system and step the voltage to a stable leve
 
 ## Problems Encountered
 
-We ran into several issues during development. The display sometimes needed exact reset timing, especially after waking from sleep. The navigation switch produced bouncing, so we had to use latched input handling. The microphone was sensitive and gave inconsistent triggers, which made the chatbot reaction feature a bit unpredictable. ESP NOW had to be reinitialized after waking from low power mode. Our Snake game originally allowed wrap around movement which worked but was not ideal for traditional collision rules. Finally, we ran out of time to fully integrate everything into our 3D printed BMO enclosure.
+We ran into several issues during development. The display sometimes needed exact reset timing, especially after waking from sleep. The navigation switch produced bouncing, so we had to use latched input handling. The microphone was sensitive and gave inconsistent triggers, which made the chatbot reaction feature a bit unpredictable. ESP NOW had to be reinitialized after waking from low power mode. Finally, we ran out of time to fully integrate everything into our 3D printed BMO enclosure.
 
 ## Comparison to Real Embedded Systems
 
