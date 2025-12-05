@@ -55,3 +55,14 @@ If we had more time or resources, we would refine several parts of the system. W
 ## Conclusion
 
 Overall, our BMO Tamagotchi companion was a successful and enjoyable project. It brought together many topics from ECE 4180 including displays, wireless communication, sensors, PWM audio, low power modes, and embedded software structure. Although there are many ways we could refine or expand it, the final system works well and feels like a playful digital character.
+
+### Libraries Used
+- 4D Systems Goldelox_Serial_4DLib (uLCD display communication)
+- ArduinoJson (JSON parsing for voice backend)
+- ESP32Time (RTC time helper)
+- Standard ESP32 Arduino Core Libraries (WiFi, esp_now, ledc, etc.)
+
+All application logic, games, UI rendering,
+state machines, menus, and device integration
+were written by us for this project.
+
