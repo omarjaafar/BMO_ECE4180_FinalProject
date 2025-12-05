@@ -1,8 +1,8 @@
 # ECE 4180 Final Project  
 ## BMO Tamagotchi Companion
 
-![Circuit Diagram](<img width="1861" height="1126" alt="BMO_Circuit_Diagram drawio" src="https://github.com/user-attachments/assets/f0f707de-ff81-437a-bf9d-7f9cf37a975c" />
-)
+<img width="1861" height="1126" alt="BMO_Circuit_Diagram drawio" src="https://github.com/user-attachments/assets/3fa4689a-d563-421d-a807-93e78ca8ebbd" />
+
 
 For our final project, we created an interactive BMO inspired Tamagotchi system using an ESP32 C6 microcontroller and a secondary ESP32 board with an IMU sensor. Our goal was to build a small digital companion that shows emotions, plays games, reacts to the user, and manages virtual stats like happiness and energy. The project combines a display, audio feedback, user input, wireless communication, a microphone, and low power features into one system.
 
